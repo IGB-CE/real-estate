@@ -3,7 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const cors = require('cors')
 const session = require('express-session')
-let contactRoute = require('./routes/contactRoutejs')
+let contactRoute = require('./routes/contactRoute.js')
+let userRoute = require("./routes/userRoute.js")
 
 app.use(cors(
     {
@@ -28,6 +29,8 @@ app.use(contactRoute);
 app.use("/send", (req, res) => {
     res.send("Hello!");
 })
+
+app.use("/api/user", userRoute)
 
 app.listen(5000, (req, res) => {
     console.log("Server start!");
