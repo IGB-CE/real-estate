@@ -5,6 +5,7 @@ const cors = require('cors')
 const session = require('express-session')
 let contactRoute = require('./routes/contactRoute.js')
 let userRoute = require("./routes/userRoute.js")
+let authRoute = require("./routes/authRoute.js")
 
 app.use(cors(
     {
@@ -31,6 +32,7 @@ app.use("/send", (req, res) => {
 })
 
 app.use("/api/user", userRoute)
+app.use("/api/auth", authRoute)
 
 app.listen(5000, (req, res) => {
     console.log("Server start!");
