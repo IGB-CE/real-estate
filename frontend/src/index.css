@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+/* *{
+    border: solid red 1px;
+} */
+
+.project-row {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.project-card {
+    width: 25rem;
+    border: none;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
