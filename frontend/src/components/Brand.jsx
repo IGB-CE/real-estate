@@ -10,13 +10,7 @@ import CountUp, { useCountUp } from 'react-countup';
 import VisibilitySensor from 'react-visibility-sensor';
 
 const Brand = () => {
-    useCountUp({
-        ref: 'counter',
-        end: 1234567,
-        enableScrollSpy: true,
-        scrollSpyDelay: 1000,
-        duration: 10
-    });
+
     return (
         <Container>
             <Row>
