@@ -4,6 +4,17 @@
     border: solid red 1px;
 } */
 
+* {
+    font-family: Josefin;
+}
+
+.card {
+    background-color: #F9F5EE;
+    box-shadow: 10px 10px 10px #ffcc99;
+    padding: 1%;
+    margin-top: 10px;
+}
+
 .project-row {
     overflow-x: auto;
     scroll-behavior: smooth;

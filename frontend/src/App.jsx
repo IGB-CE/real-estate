@@ -7,6 +7,8 @@ import Footer from './components/Footer'
 import About from './pages/About';
 import Contact from './pages/Contact';
 import { ToastContainer } from 'react-toastify';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn'
 
 const App = () => {
   return (
@@ -17,6 +19,8 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
+        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/sign-in' element={<SignIn />} />
       </Routes>
       <Footer />
     </div>

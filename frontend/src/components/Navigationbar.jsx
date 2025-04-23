@@ -18,7 +18,7 @@ const Navigationbar = () => {
           <Nav.Link href="/contact">Contact</Nav.Link>
           <Nav.Link href="/projects">Projects</Nav.Link>
           <Nav.Link href="/testimonials">Testimonials</Nav.Link>
-          <Button variant='secondary'>Sign In</Button>
+          <Button href="/sign-up" variant='secondary'>Sign Up</Button>
         </Nav>
       </Navbar.Collapse>
     </Container>
