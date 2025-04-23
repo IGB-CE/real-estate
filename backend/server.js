@@ -6,6 +6,9 @@ const session = require('express-session')
 let contactRoute = require('./routes/contactRoute.js')
 let userRoute = require("./routes/userRoute.js")
 let authRoute = require("./routes/authRoute.js")
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 app.use(cors(
     {
@@ -21,7 +24,7 @@ app.use(session({
 }))
 app.use(express.json({ limit: "1000mb", extended: true }));
 
-mongoose.connect('mongodb+srv://iglibraho77:braho230.@cluster0.uxx6svk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(process.env.MONGO)
     .then(() => console.log("DB connected"))
     .catch((err) => console.log("Error", err));
 
