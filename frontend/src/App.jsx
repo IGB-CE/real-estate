@@ -9,6 +9,8 @@ import Contact from './pages/Contact';
 import { ToastContainer } from 'react-toastify';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn'
+import Profile from './pages/Profile';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
@@ -21,6 +23,9 @@ const App = () => {
         <Route path='/contact' element={<Contact />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
+        <Route element={<PrivateRoute />} >
+          <Route path='/profile' element={<Profile />} />
+        </Route>
       </Routes>
       <Footer />
     </div>
