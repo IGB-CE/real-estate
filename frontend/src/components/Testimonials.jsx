@@ -15,7 +15,7 @@ const Testimonials = () => {
                         return (
                             <Col md={6} className='p-3' key={index}>
                                 <Card style={{ width: '80%', padding: '10px', margin:'auto' }}>
-                                    <Card.Img style={{width:'3rem', position: 'absolute', top:'-30px', left:'50px'}} variant="bottom" src={data.image} />
+                                    <Card.Img style={{width:'3rem', position: 'absolute', top:'-30px', left:'50px', borderRadius: "50%"}} variant="bottom" src={data.image} />
                                     <Card.Body style={{backgroundColor:"#F9F5EE"}}>
                                         <Card.Title>{data.name}</Card.Title>
                                         <Card.Text>

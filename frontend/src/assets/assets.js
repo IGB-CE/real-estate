@@ -19,6 +19,10 @@ import project_img_2 from './project_img_2.png'
 import project_img_3 from './project_img_3.png'
 import project_img_4 from './project_img_4.png'
 import project_img_5 from './project_img_5.png'
+import project_img_6 from './project_img_6.png'
+import project_img_7 from './project_img_7.png'
+import project_img_8 from './project_img_8.png'
+import project_img_9 from './project_img_9.png'
 import profile_img_1 from './profile_img_1.png'
 import profile_img_2 from './profile_img_2.jpg'
 import profile_img_3 from './profile_img_3.avif'
@@ -46,6 +50,10 @@ export const assets = {
     project_img_3,
     project_img_4,
     project_img_5,
+    project_img_6,
+    project_img_7,
+    project_img_8,
+    project_img_9,
     profile_img_1,
     profile_img_2,
     profile_img_3,
@@ -84,9 +92,37 @@ export const projectData = [
     {
         title: "DreamLoom Realty",
         price: "$4,50,000",
-        location: "New Jersey",
+        location: "Georgia",
         rating: 5,
         image: project_img_5
+    },
+    {
+        title: "SerenityScape Realty",
+        price: "$5,110,000",
+        location: "Florida",
+        rating: 4,
+        image: project_img_6
+    },
+    {
+        title: "VisionaryVilla Ventures",
+        price: "$2,250,000",
+        location: "Connecticut",
+        rating: 5,
+        image: project_img_7
+    },
+    {
+        title: "UrbanUtopia Estates",
+        price: "$4,50,000",
+        location: "New Jersey",
+        rating: 3,
+        image: project_img_8
+    },
+    {
+        title: "LuminaLodge Realty",
+        price: "$1,10,000",
+        location: "California",
+        rating: 5,
+        image: project_img_9
     },
 ]
 
