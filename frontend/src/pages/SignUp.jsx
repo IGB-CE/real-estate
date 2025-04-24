@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router';
 import '../index.css'
+import OAuth from '../components/OAuth';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({})
@@ -76,7 +77,7 @@ const SignUp = () => {
                         <Button disabled={loading} variant="secondary" type="submit" className="w-100 mb-3">
                             {loading ? 'Loading...' : 'Sign Up'}
                         </Button>
-
+                        <OAuth />
                     </Form>
                     <div className="d-flex justify-content-between">
                         <p className="mb-0">Have an account?</p>
