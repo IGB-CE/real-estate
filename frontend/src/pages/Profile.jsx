@@ -1,11 +1,13 @@
 import React from 'react'
 import { Col, Container, Row, Image, Form, Button } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { useRef } from 'react'
 import '../index.css'
 import { assets } from '../assets/assets'
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user)
+  const fileRef = useRef(null)
   return (
     <Container fluid='md'>
       <Row className='w-50 m-auto'>
@@ -14,7 +16,8 @@ const Profile = () => {
             <h1 className='text-center'>Profile</h1>
             <Form >
               <Col md={12}>
-                <Image src={assets.profile_img_1} width={64} alt='profile' className="d-block mx-auto mb-3"/>
+              <input type="file" ref={fileRef} hidden accept='image/*'/>
+                <Image onClick={()=>fileRef.current.click()} src={currentUser.avatar} width={64} alt='profile' className="d-block mx-auto mb-3"/>
               </Col>
               <Row>
               <Col md={6}>
