@@ -62,4 +62,14 @@ const google = async (req, res, next) => {
     }
 }
 
-module.exports = { signup, signin, google };
+const logout = async (req, res, next) => {
+    res.clearCookie('access_token', {
+        httpOnly: true,
+        sameSite: 'Lax', // or 'None' if using cross-site cookies
+        secure: process.env.NODE_ENV === 'production', // use secure in production
+    });
+    return res.status(200).json({ message: 'Logged out successfully' });
+};
+
+
+module.exports = { signup, signin, google, logout };
