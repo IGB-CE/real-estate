@@ -4,6 +4,7 @@ const path = require("path");
 const app = express();
 const bcryptjs = require('bcryptjs');
 const User = require("../models/user.js");
+const errorHandler = require("../utils/error.js");
 
 const profileUpdate = async (req, res, next) => {
     if (req.user.id !== req.params.id) return next(errorHandler(401, "You can only update your own account!"))

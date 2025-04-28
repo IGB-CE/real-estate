@@ -54,7 +54,7 @@ const Profile = () => {
     <Container fluid='md'>
       <Row className='w-50 m-auto'>
         <Col className='card'>
-          <Row>
+          <Row className='m-3'>
             <h1 className='text-center'>Profile</h1>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
               <Col md={12}>
@@ -90,11 +90,14 @@ const Profile = () => {
               </Col>
               <Row>
                 <Col md={6}>
-                  <Button variant="danger" style={{ width: "100%", margin: "10px 0" }}>
-                    Delete Account
+                  <Button variant="success" style={{ width: "100%", margin: "10px 0" }}>
+                    Save Changes
                   </Button>
                 </Col>
                 <Col md={6}>
+                <Button variant="danger" style={{ width: "100%", margin: "10px 0" }}>
+                    Delete Account
+                  </Button>
                 </Col>
               </Row>
             </Form>

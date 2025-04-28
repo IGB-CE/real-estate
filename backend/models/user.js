@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw1xwWnBnwlJx-PYMGqexJLi&ust=1745573731375000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCOC6woKv8IwDFQAAAAAdAAAAABAE"
+        default: "https://img.freepik.com/premium-vector/avatar-profile-icon-flat-style-male-user-profile-vector-illustration-isolated-background-man-profile-sign-business-concept_157943-38764.jpg"
     },
 }, { timestamps: true });
 
