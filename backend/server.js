@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const contactRoute = require('./routes/contactRoute.js');
 const userRoute = require('./routes/userRoute.js');
 const authRoute = require('./routes/authRoute.js');
+const listingRoute = require('./routes/listingRoute.js')
 
 dotenv.config();
 
@@ -27,9 +28,10 @@ mongoose.connect(process.env.MONGO)
     .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Routes
-app.use('/api/contact', contactRoute); // Added a better path for contactRoute
+app.use('/api/contact', contactRoute);
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/listing', listingRoute);
 
 // Static files
 app.use('/images', express.static('images'));
