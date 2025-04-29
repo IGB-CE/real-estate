@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
 const { verifyToken } = require("../utils/verifyUser");
-const { profileUpdate } = require('../controllers/user.js')
+const { updateUser, deleteUser } = require('../controllers/user.js')
 const path = require("path");
 
 
@@ -34,6 +34,7 @@ const fileFilter = (req, file, cb) => {
 let upload = multer({ storage, fileFilter });
 
 router.get('/test', test);
-router.post('/update/:id', verifyToken, upload.single("avatar"), profileUpdate);
+router.post('/update/:id', verifyToken, upload.single("avatar"), updateUser);
+router.delete('/delete/:id', verifyToken, deleteUser);
 
 module.exports = router

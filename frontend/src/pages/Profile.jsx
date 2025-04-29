@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRef } from 'react'
 import '../index.css'
 import { assets } from '../assets/assets'
-import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice'
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice'
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user)
@@ -58,6 +58,23 @@ const Profile = () => {
   useEffect(() => {
     if (error) dispatch(updateUserFailure(null));
   }, [formData]);
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart())
+      const res = await fetch(`http://localhost:5000/api/user/delete/${currentUser._id}`,{
+        method:'DELETE',
+        credentials: 'include'
+      })
+      const data = await res.json()
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message))
+        return
+      }
+      dispatch(deleteUserSuccess(data))
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
+    }
+  }
   return (
     <Container fluid='md'>
       <Row className='w-50 m-auto'>
@@ -97,18 +114,23 @@ const Profile = () => {
                 </Form.Group>
               </Col>
               <Row>
-                <Col md={6}>
+                <Col md={12}>
                   <Button
                     disabled={loading}
                     type='submit'
                     variant="success"
                     style={{ width: "100%", margin: "10px 0" }}>
-                    {loading ? 'Loading...' : 'Update'}
+                    {loading ? 'Loading...' : 'Update Account'}
                   </Button>
                 </Col>
                 <Col md={6}>
-                  <Button variant="danger" style={{ width: "100%", margin: "10px 0" }}>
+                  <Button onClick={handleDeleteUser} variant="danger" style={{ width: "100%", margin: "10px 0" }}>
                     Delete Account
+                  </Button>
+                </Col>
+                <Col md={6}>
+                  <Button variant="secondary" style={{ width: "100%", margin: "10px 0" }}>
+                    Sign Out
                   </Button>
                 </Col>
               </Row>

@@ -6,7 +6,7 @@ const bcryptjs = require('bcryptjs');
 const User = require("../models/user.js");
 const errorHandler = require("../utils/error.js");
 
-const profileUpdate = async (req, res, next) => {
+const updateUser = async (req, res, next) => {
     if (req.user.id !== req.params.id) return next(errorHandler(401, "You can only update your own account!"))
     try {
         if (req.body.password) {
@@ -30,10 +30,26 @@ const profileUpdate = async (req, res, next) => {
 
 }
 
+const deleteUser = async (req, res, next) => {
+    if (req.user.id !== req.params.id) return next(errorHandler(401, 'You can only delete your own account!'))
+    try {
+        await User.findByIdAndDelete(req.params.id)
+        res.clearCookie('access_token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+            path: '/', // ✅ THIS is required
+        });
+        res.status(200).json({ message: 'User has been deleted!' })
+    } catch (error) {
+        next(errorHandler(500, error.message))
+    }
+}
+
 const test = (req, res) => {
     res.json({
         message: 'Api is working'
     });
 }
 
-module.exports = { test, profileUpdate }
+module.exports = { test, updateUser, deleteUser }

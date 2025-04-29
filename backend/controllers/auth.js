@@ -39,9 +39,10 @@ const signin = async (req, res, next) => {
 
         res.cookie('access_token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // ✅ important fix
+            secure: process.env.NODE_ENV === 'production' ? true : false,
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // ✅ important fix
             maxAge: 1000 * 60 * 60 * 24, // 1 day
+            path: '/', // ✅ THIS is required
         }).status(200).json(rest);
     } catch (error) {
         next(errorHandler(500, error.message));
@@ -59,9 +60,10 @@ const google = async (req, res, next) => {
 
             res.cookie('access_token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: process.env.NODE_ENV === 'production' ? true : false,
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
                 maxAge: 1000 * 60 * 60 * 24,
+                path: '/', // ✅ THIS is required
             }).status(200).json(rest);
         } else {
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
@@ -84,9 +86,10 @@ const google = async (req, res, next) => {
 
             res.cookie('access_token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: process.env.NODE_ENV === 'production' ? true : false,
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
                 maxAge: 1000 * 60 * 60 * 24,
+                path: '/', // ✅ THIS is required
             }).status(200).json(rest);
         }
     } catch (error) {
@@ -99,7 +102,7 @@ const logout = async (req, res, next) => {
     try {
         res.clearCookie('access_token', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: process.env.NODE_ENV === 'production' ? true : false,
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
         });
         return res.status(200).json({ message: 'Logged out successfully' });
