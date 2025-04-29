@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-import {useNavigate} from 'react-router'
+import { useNavigate } from 'react-router'
 
 const Navigationbar = () => {
   const nav = useNavigate()
@@ -39,12 +39,13 @@ const Navigationbar = () => {
               {
                 currentUser ? (
                   <img
-                  src={currentUser.avatar}
-                  alt="profile"
-                  style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
-                />
-
-              ) : <span>Sign in</span>
+                    src={currentUser.avatar
+                      ? `http://localhost:5000/images/${currentUser.avatar}`
+                      : assets.defaultAvatar}
+                    alt="avatar"
+                    style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                ) : <span>Sign in</span>
               }
             </Nav.Link>
             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>

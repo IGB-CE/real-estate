@@ -7,14 +7,16 @@ import { assets } from '../assets/assets'
 import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice'
 
 const Profile = () => {
-  const { currentUser } = useSelector((state) => state.user)
-  console.log(currentUser);
-  
+  const { currentUser, loading, error } = useSelector((state) => state.user)
   const fileRef = useRef(null)
   const [file, setFile] = useState(null)
   const [formData, setFormData] = useState({})
   const dispatch = useDispatch()
-
+  const avatarSrc = file
+    ? URL.createObjectURL(file)
+    : currentUser.avatar
+      ? `http://localhost:5000/images/${currentUser.avatar}`
+      : assets.defaultAvatar;
   const handleImageChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -24,6 +26,8 @@ const Profile = () => {
   };
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+    console.log(formData);
+
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +42,7 @@ const Profile = () => {
       const res = await fetch(`http://localhost:5000/api/user/update/${currentUser._id}`, {
         method: 'POST',
         body: formPayload,
+        credentials: 'include',
       });
 
       const data = await res.json();
@@ -50,6 +55,9 @@ const Profile = () => {
       dispatch(updateUserFailure(error.message));
     }
   };
+  useEffect(() => {
+    if (error) dispatch(updateUserFailure(null));
+  }, [formData]);
   return (
     <Container fluid='md'>
       <Row className='w-50 m-auto'>
@@ -61,7 +69,7 @@ const Profile = () => {
                 <input type="file" ref={fileRef} hidden accept='image/*' onChange={handleImageChange} />
                 <Image
                   onClick={() => fileRef.current.click()}
-                  src={file ? URL.createObjectURL(file) : currentUser.avatar}
+                  src={avatarSrc}
                   width={64}
                   alt='profile'
                   className="d-block mx-auto mb-3"
@@ -84,23 +92,28 @@ const Profile = () => {
               </Col>
               <Col md={12}>
                 <Form.Group className="mb-3" controlId="password" >
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="password" name='password' onChange={handleChange} />
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type="password" name='password' onChange={handleChange} placeholder="Enter new password" />
                 </Form.Group>
               </Col>
               <Row>
                 <Col md={6}>
-                  <Button variant="success" style={{ width: "100%", margin: "10px 0" }}>
-                    Save Changes
+                  <Button
+                    disabled={loading}
+                    type='submit'
+                    variant="success"
+                    style={{ width: "100%", margin: "10px 0" }}>
+                    {loading ? 'Loading...' : 'Update'}
                   </Button>
                 </Col>
                 <Col md={6}>
-                <Button variant="danger" style={{ width: "100%", margin: "10px 0" }}>
+                  <Button variant="danger" style={{ width: "100%", margin: "10px 0" }}>
                     Delete Account
                   </Button>
                 </Col>
               </Row>
             </Form>
+            <p className='text-danger'>{error ? error : ''}</p>
           </Row>
         </Col>
       </Row>
