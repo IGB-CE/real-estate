@@ -3,26 +3,10 @@ import { assets } from '../assets/assets.js'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux'
-import axios from 'axios'
-import { useNavigate } from 'react-router'
 
 const Navigationbar = () => {
-  const nav = useNavigate()
   const { currentUser } = useSelector(state => state.user)
-  const handleLogout = (e) => {
-    // { withCredentials: true } kalon cookies me ane te kerkese (perdoret per token qe eshte marre nga jwt)
-    axios.post('http://localhost:5000/api/auth/logout', null, { withCredentials: true })
-      .then(res => {
-        // Kalon te komponenti i login
-        nav('/sign-in');
-      })
-      // Nese nuk ndodh logout
-      .catch(error => {
-        console.error('Error logging out:', error);
-      });
-  }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -48,7 +32,6 @@ const Navigationbar = () => {
                 ) : <span>Sign in</span>
               }
             </Nav.Link>
-            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

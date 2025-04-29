@@ -97,18 +97,18 @@ const google = async (req, res, next) => {
     }
 };
 
-// LOGOUT CONTROLLER
-const logout = async (req, res, next) => {
+const signOut = async (req, res, next) => {
     try {
         res.clearCookie('access_token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production' ? true : false,
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+            path: '/', // ✅ THIS is required
         });
-        return res.status(200).json({ message: 'Logged out successfully' });
+        res.status(200).json('User has been logged out!')
     } catch (error) {
-        next(errorHandler(500, error.message));
+        next(errorHandler(500, error.message))
     }
-};
+}
 
-module.exports = { signup, signin, google, logout };
+module.exports = { signup, signin, google, signOut };

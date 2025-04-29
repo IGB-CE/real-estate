@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRef } from 'react'
 import '../index.css'
 import { assets } from '../assets/assets'
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice'
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserFailure, signOutUserSuccess } from '../redux/user/userSlice'
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user)
@@ -75,6 +75,23 @@ const Profile = () => {
       dispatch(deleteUserFailure(error.message))
     }
   }
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart())
+      const res = await fetch('http://localhost:5000/api/auth/signout', {
+        method: 'GET', // Ensure this is the correct method
+        credentials: 'include', // This is required for sending cookies
+    })
+      const data = await res.json()
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message))
+        return
+      }
+      dispatch(signOutUserSuccess(data))
+    } catch (error) {
+      dispatch(signOutUserFailure(data.message))
+    }
+  }
   return (
     <Container fluid='md'>
       <Row className='w-50 m-auto'>
@@ -129,7 +146,7 @@ const Profile = () => {
                   </Button>
                 </Col>
                 <Col md={6}>
-                  <Button variant="secondary" style={{ width: "100%", margin: "10px 0" }}>
+                  <Button onClick={handleSignOut} variant="secondary" style={{ width: "100%", margin: "10px 0" }}>
                     Sign Out
                   </Button>
                 </Col>
