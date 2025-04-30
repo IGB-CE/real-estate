@@ -5,6 +5,7 @@ const app = express();
 const bcryptjs = require('bcryptjs');
 const User = require("../models/user.js");
 const errorHandler = require("../utils/error.js");
+const Listing = require("../models/listing.js");
 
 const updateUser = async (req, res, next) => {
     if (req.user.id !== req.params.id) return next(errorHandler(401, "You can only update your own account!"))
@@ -46,10 +47,23 @@ const deleteUser = async (req, res, next) => {
     }
 }
 
+const getUserListings = async (req, res, next) => {
+    if (req.user.id === req.params.id) {
+        try {
+            const listings = await Listing.find({ userRef: req.params.id })
+            res.status(200).json(listings)
+        } catch (error) {
+            next(error)
+        }
+    } else {
+        return next(errorHandler(401, 'You can only view your own listings!'))
+    }
+}
+
 const test = (req, res) => {
     res.json({
         message: 'Api is working'
     });
 }
 
-module.exports = { test, updateUser, deleteUser }
+module.exports = { test, updateUser, deleteUser, getUserListings }
