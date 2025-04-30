@@ -5,6 +5,7 @@ import { useRef } from 'react'
 import '../index.css'
 import { assets } from '../assets/assets'
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserFailure, signOutUserSuccess } from '../redux/user/userSlice'
+import { Link } from 'react-router'
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user)
@@ -61,8 +62,8 @@ const Profile = () => {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart())
-      const res = await fetch(`http://localhost:5000/api/user/delete/${currentUser._id}`,{
-        method:'DELETE',
+      const res = await fetch(`http://localhost:5000/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
         credentials: 'include'
       })
       const data = await res.json()
@@ -81,7 +82,7 @@ const Profile = () => {
       const res = await fetch('http://localhost:5000/api/auth/signout', {
         method: 'GET', // Ensure this is the correct method
         credentials: 'include', // This is required for sending cookies
-    })
+      })
       const data = await res.json()
       if (data.success === false) {
         dispatch(signOutUserFailure(data.message))
@@ -113,7 +114,7 @@ const Profile = () => {
               <Row>
                 <Col md={12}>
                   <Form.Group className="mb-3" controlId="username">
-                    <Form.Label>First Name</Form.Label>
+                    <Form.Label>Username</Form.Label>
                     <Form.Control type="text" name='username' defaultValue={currentUser.username} onChange={handleChange} />
                   </Form.Group>
                 </Col>
@@ -140,13 +141,20 @@ const Profile = () => {
                     {loading ? 'Loading...' : 'Update Account'}
                   </Button>
                 </Col>
+                <Col md={12}>
+                  <Link to={"/create-listing"} >
+                    <Button variant='secondary' className='w-100'>
+                      Create Listing
+                    </Button>
+                  </Link>
+                </Col>
                 <Col md={6}>
                   <Button onClick={handleDeleteUser} variant="danger" style={{ width: "100%", margin: "10px 0" }}>
                     Delete Account
                   </Button>
                 </Col>
                 <Col md={6}>
-                  <Button onClick={handleSignOut} variant="secondary" style={{ width: "100%", margin: "10px 0" }}>
+                  <Button onClick={handleSignOut} variant="danger" style={{ width: "100%", margin: "10px 0" }}>
                     Sign Out
                   </Button>
                 </Col>
