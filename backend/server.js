@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const path = require("path");
 
 const contactRoute = require('./routes/contactRoute.js');
 const userRoute = require('./routes/userRoute.js');
@@ -34,7 +35,8 @@ app.use('/api/auth', authRoute);
 app.use('/api/listing', listingRoute);
 
 // Static files
-app.use('/images', express.static('images'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 // Test endpoint (optional, you can remove later)
 app.get("/send", (req, res) => {

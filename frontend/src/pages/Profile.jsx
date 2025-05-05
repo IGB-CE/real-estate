@@ -12,6 +12,8 @@ const Profile = () => {
   const fileRef = useRef(null)
   const [file, setFile] = useState(null)
   const [formData, setFormData] = useState({})
+  const [showListingError, setShowListingError] = useState(false)
+  const [userListings, setUserListings] = useState([])
   const dispatch = useDispatch()
   const avatarSrc = file
     ? URL.createObjectURL(file)
@@ -93,10 +95,32 @@ const Profile = () => {
       dispatch(signOutUserFailure(data.message))
     }
   }
+
+  const handleShowListings = async () => {
+    try {
+      setShowListingError(false)
+      console.log(currentUser._id);
+
+      const res = await fetch(`http://localhost:5000/api/user/listings/${currentUser._id}`,
+        {
+          method: 'GET', // Ensure this is the correct method
+          credentials: 'include', // This is required for sending cookies
+        }
+      )
+      const data = await res.json()
+      if (data.success === false) {
+        setShowListingError(true)
+        return
+      }
+      setUserListings(data)
+    } catch (error) {
+      setShowListingError(true)
+    }
+  }
   return (
     <Container fluid='md'>
       <Row className='w-50 m-auto'>
-        <Col className='card'>
+        <Col md={12} className='card'>
           <Row className='m-3'>
             <h1 className='text-center'>Profile</h1>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -162,7 +186,45 @@ const Profile = () => {
             </Form>
             <p className='text-danger'>{error ? error : ''}</p>
           </Row>
+          <Row>
+          </Row>
         </Col>
+        <Col md={12} className='mt-4 text-center'>
+          <Button onClick={handleShowListings} variant='outline-success'>
+            Show Listings
+          </Button>
+          <p className='text-danger'>
+            {showListingError && 'Error showing listings'}
+          </p>
+          {userListings && userListings.length > 0 &&
+            userListings.map((listing) => (
+              <Row key={listing._id} className="align-items-center my-4 border p-3 rounded shadow-sm">
+                <Col md={4} className="text-start">
+                  <Link to={`/listing/${listing._id}`}>
+                    <img
+                      src={`http://localhost:5000/${listing.images[0]}`}
+                      alt="listing cover"
+                      className="img-fluid rounded"
+                      style={{ maxHeight: '150px', objectFit: 'cover' }}
+                    />
+                  </Link>
+                </Col>
+                <Col md={4}>
+                  <Link to={`/listing/${listing._id}`} className="text-decoration-none text-dark">
+                    <h5>{listing.name}</h5>
+                    <p className="mb-1"><strong>Type:</strong> {listing.type}</p>
+                    <p className="mb-1"><strong>Price:</strong> ${listing.regularPrice}</p>
+                  </Link>
+                </Col>
+                <Col md={4} className="d-flex flex-column align-items-end">
+                  <Button variant='success' className='mb-2 w-75'>Edit</Button>
+                  <Button variant='danger' className='w-75'>Delete</Button>
+                </Col>
+              </Row>
+            ))
+          }
+        </Col>
+
       </Row>
     </Container>
   )

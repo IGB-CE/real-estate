@@ -22,17 +22,19 @@ const CreateListing = () => {
         name: "",
         description: "",
         address: "",
+        type: "", // add this
         sell: false,
         rent: false,
         parking: false,
         furnished: false,
         offer: false,
-        beds: 1,
-        baths: 1,
+        bedrooms: 1, // was beds
+        bathrooms: 1, // was baths
         regularPrice: 0,
-        discountedPrice: 0,
+        discountPrice: 0, // was discountedPrice
         images: [],
     });
+
 
     const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -58,42 +60,41 @@ const CreateListing = () => {
         e.preventDefault();
         setLoading(true);
         setError(false);
-    
+
         const formData = new FormData();
-    
+
         // Append images
         product.images.forEach((image) => {
             formData.append("images", image);
         });
-    
+
         // Append fields
         Object.entries(product).forEach(([key, value]) => {
             if (key !== "images") {
                 formData.append(key, value);
             }
         });
-    
+
         // Add user reference
         formData.append("userRef", currentUser._id);
+        console.log(formData['userRef']);
+
         for (let [key, value] of formData.entries()) {
             console.log(`${key}:`, value);
         }
         try {
             const res = await axios.post("http://localhost:5000/api/listing/create", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
+                withCredentials: true, // ✅ Axios equivalent of credentials: 'include'
             });
-    
-            const data = res.data;
-            if (data.success === false) {
-                setError(data.message || "Something went wrong");
+            if (res.data.success === false) {
+                setError(res.data.message || "Something went wrong");
             } else {
                 nav("/");
             }
         } catch (err) {
-            setError(err?.response?.data?.message || "Submission failed");
-        } finally {
+            setError(err.response?.data?.message || "Submission failed");
+        }
+        finally {
             setLoading(false);
         }
     };
@@ -120,6 +121,16 @@ const CreateListing = () => {
                             <Form.Control type="text" name="address" onChange={handleChange} />
                         </Form.Group>
 
+                        <Form.Group className="mb-3">
+                            <Form.Label>Listing Type</Form.Label>
+                            <Form.Select name="type" onChange={handleChange} value={product.type}>
+                                <option value="">Select Type</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="house">House</option>
+                                <option value="studio">Studio</option>
+                            </Form.Select>
+                        </Form.Group>
+
                         <div className="mb-3">
                             {checkboxOptions.map(({ label, name }) => (
                                 <Form.Check
@@ -139,13 +150,13 @@ const CreateListing = () => {
                             <Col md={6}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Beds</InputGroup.Text>
-                                    <Form.Control type="number" name="beds" min={0} max={10} onChange={handleChange} />
+                                    <Form.Control type="number" name="bedrooms" min={0} max={10} onChange={handleChange} />
                                 </InputGroup>
                             </Col>
                             <Col md={6}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Baths</InputGroup.Text>
-                                    <Form.Control type="number" name="baths" min={0} max={10} onChange={handleChange} />
+                                    <Form.Control type="number" name="bathrooms" min={0} max={10} onChange={handleChange} />
                                 </InputGroup>
                             </Col>
                         </Row>
@@ -159,7 +170,7 @@ const CreateListing = () => {
                             </Col>
                             <Col md={6}>
                                 <InputGroup className="mb-3">
-                                    <Form.Control type="number" name="discountedPrice" placeholder="Discounted price" min={0} onChange={handleChange} />
+                                    <Form.Control type="number" name="discountPrice" placeholder="Discounted price" min={0} onChange={handleChange} />
                                     <InputGroup.Text>(L / month)</InputGroup.Text>
                                 </InputGroup>
                             </Col>
@@ -174,18 +185,16 @@ const CreateListing = () => {
 
                         {imagePreviews.length > 0 && (
                             <div className="d-flex overflow-auto gap-3 mb-3" style={{ whiteSpace: 'nowrap' }}>
-                                {imagePreviews.length > 0 &&
-                                    imagePreviews.map((src, index) => (
-                                        <img
-                                            key={index}
-                                            src={src}
-                                            alt={`preview-${index}`}
-                                            className="rounded"
-                                            style={{ height: '150px', objectFit: 'cover' }}
-                                        />
-                                    ))}
+                                {imagePreviews.map((src, index) => (
+                                    <img
+                                        key={index}
+                                        src={src}
+                                        alt={`preview-${index}`}
+                                        className="rounded"
+                                        style={{ height: '150px', objectFit: 'cover' }}
+                                    />
+                                ))}
                             </div>
-
                         )}
 
                         <Button variant="dark" className="w-100" type="submit">
@@ -194,6 +203,7 @@ const CreateListing = () => {
                         {error && <p>{error}</p>}
                     </Col>
                 </Row>
+
             </Form>
         </Container>
     );

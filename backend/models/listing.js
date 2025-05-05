@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const listingSchema = new mongoose.Schema({
     name: {
@@ -15,11 +15,17 @@ const listingSchema = new mongoose.Schema({
     },
     regularPrice: {
         type: Number,
-        required: true
+        required: true,
     },
     discountPrice: {
         type: Number,
-        required: true
+        required: true,
+        validate: {
+            validator: function(value) {
+                return value <= this.regularPrice;
+            },
+            message: 'Discount price cannot be higher than regular price.',
+        },
     },
     bathrooms: {
         type: Number,
@@ -31,7 +37,7 @@ const listingSchema = new mongoose.Schema({
     },
     furnished: {
         type: Boolean,
-        required: true
+        required: true,
     },
     parking: {
         type: Boolean,
@@ -39,23 +45,23 @@ const listingSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        required: true
+        required: true,
     },
     offer: {
         type: Boolean,
-        required: true
+        required: true,
     },
-    imageUrls: {
-        type: Array,
-        required: true
+    images: {
+        type: [String],  // Assuming these are URLs or file paths
+        required: true,
     },
     userRef: {
-        type: String,
-        required: true
-    }
-}, { timestamps: true }
-)
+        type: mongoose.Schema.Types.ObjectId,  // Assuming userRef refers to a User document
+        ref: 'User',
+        required: true,
+    },
+}, { timestamps: true });
 
-const Listing = mongoose.model('Listing', listingSchema)
+const Listing = mongoose.model('Listing', listingSchema);
 
 module.exports = Listing;
