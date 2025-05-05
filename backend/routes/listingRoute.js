@@ -1,5 +1,5 @@
 const express = require("express");
-const { createListing, deleteListing } = require('../controllers/listing.js');
+const { createListing, deleteListing, updateListing } = require('../controllers/listing.js');
 const { verifyToken } = require("../utils/verifyUser.js");
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
@@ -53,5 +53,8 @@ router.post('/create', verifyToken, upload.array('images', 10), async (req, res,
 
 // DELETE route for deleting a listing
 router.delete('/delete/:id', verifyToken, deleteListing);
+
+// POST route for editing a listing
+router.post('/update/:id', verifyToken, updateListing);
 
 module.exports = router;
