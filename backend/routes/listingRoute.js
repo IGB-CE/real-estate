@@ -1,5 +1,5 @@
 const express = require("express");
-const { createListing, deleteListing, updateListing } = require('../controllers/listing.js');
+const { createListing, deleteListing, updateListing, getListing } = require('../controllers/listing.js');
 const { verifyToken } = require("../utils/verifyUser.js");
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
@@ -55,6 +55,16 @@ router.post('/create', verifyToken, upload.array('images', 10), async (req, res,
 router.delete('/delete/:id', verifyToken, deleteListing);
 
 // POST route for editing a listing
-router.post('/update/:id', verifyToken, updateListing);
+router.post('/update/:id', verifyToken, upload.array('images', 10), async (req, res, next) => {
+    console.log(req.files);  // Log the uploaded files
+    if (!req.files || req.files.length === 0) {
+        return next(errorHandler(400, "No files uploaded"));
+    }
+
+    // Proceed with the update
+    await updateListing(req, res, next);
+});
+
+router.get('/get/:id', getListing)
 
 module.exports = router;

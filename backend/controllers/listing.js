@@ -53,23 +53,57 @@ const deleteListing = async (req, res, next) => {
 }
 
 const updateListing = async (req, res, next) => {
-    const listing = await Listing.findById(req.params.id)
-    if(!listing){
-        return next(errorHandler(404, 'Listing not found!'))
-    }
-    if(req.user.id !== listing.userRef.toString()){
-        return next(errorHandler(401,'You can only update your own listings!'))
-    }
     try {
+        const listing = await Listing.findById(req.params.id);
+        if (!listing) {
+            return next(errorHandler(404, 'Listing not found!'));
+        }
+
+        // Ensure userRef is not an array
+        if (Array.isArray(req.body.userRef)) {
+            req.body.userRef = req.body.userRef[0];
+        }
+
+        if (req.user.id !== listing.userRef.toString()) {
+            return next(errorHandler(401, 'You can only update your own listings!'));
+        }
+
+        if (req.files && req.files.length > 0) {
+            const imagePaths = req.files.map(file => `images/${file.filename}`);
+            req.body.images = imagePaths;
+        } else if (req.body.existingImages) {
+            try {
+                // Parse the existing image paths sent as JSON string
+                const parsedImages = JSON.parse(req.body.existingImages);
+                req.body.images = parsedImages.map(img => img.replace(/^http:\/\/localhost:5000\//, '')); // convert full URL to relative path
+            } catch (err) {
+                return next(errorHandler(400, "Invalid existing image data"));
+            }
+        }
+
         const updatedListing = await Listing.findByIdAndUpdate(
             req.params.id,
             req.body,
-            {new: true}
-        )
+            { new: true }
+        );
+
         res.status(200).json(updatedListing);
+    } catch (error) {
+        console.error("Error updating listing:", error);
+        next(error);
+    }
+};
+
+const getListing = async (req,res,next) => {
+    try {
+        const listing = await Listing.findById(req.params.id)
+        if (!listing) {
+            return next(errorHandler(404,'Listing not found!'))
+        }
+        res.status(200).json(listing)
     } catch (error) {
         next(error)
     }
 }
 
-module.exports = { createListing, deleteListing, updateListing };
+module.exports = { createListing, deleteListing, updateListing, getListing };

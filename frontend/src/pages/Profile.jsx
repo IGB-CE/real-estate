@@ -120,12 +120,12 @@ const Profile = () => {
 
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/listing/delete/${listingId}`,{
+      const res = await fetch(`http://localhost:5000/api/listing/delete/${listingId}`, {
         method: 'DELETE',
         credentials: 'include'
       })
       const data = res.json();
-      if (data.success===false) {
+      if (data.success === false) {
         console.log(data.message);
         return;
       }
@@ -133,7 +133,7 @@ const Profile = () => {
       setUserListings((prev) => prev.filter((listing) => listing._id !== listingId))
     } catch (error) {
       console.log(error.message);
-      
+
     }
   }
   return (
@@ -236,8 +236,10 @@ const Profile = () => {
                   </Link>
                 </Col>
                 <Col md={4} className="d-flex flex-column align-items-end">
-                  <Button variant='success' className='mb-2 w-75'>Edit</Button>
-                  <Button onClick={()=>handleListingDelete(listing._id)} variant='danger' className='w-75'>Delete</Button>
+                  <Link className='mb-2 w-75' to={`/update-listing/${listing._id}`}>
+                    <Button variant='success' >Edit</Button>
+                  </Link>
+                  <Button onClick={() => handleListingDelete(listing._id)} variant='danger' className='w-75'>Delete</Button>
                 </Col>
               </Row>
             ))
