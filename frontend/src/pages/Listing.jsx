@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Spinner, Alert, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Spinner, Alert, Badge, Carousel } from 'react-bootstrap';
 import { useParams } from 'react-router';
+import { FaBed, FaBath, FaParking, FaCouch, FaTag, FaMapMarkerAlt, FaRegMoneyBillAlt } from 'react-icons/fa';
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
@@ -51,33 +52,35 @@ const Listing = () => {
             <Col md={8}>
               {listing.images?.length > 0 && (
                 <Card className="mb-4">
-                  <Card.Img
-                    variant="top"
-                    src={`http://localhost:5000/${listing.images[0]}`}
-                    alt="Listing"
-                    style={{ maxHeight: '400px', objectFit: 'cover' }}
-                  />
+                  <Carousel>
+                    {listing.images.map((image, idx) => (
+                      <Carousel.Item key={idx}>
+                        <img
+                          className="d-block w-100"
+                          src={`http://localhost:5000/${image}`}
+                          alt={`Slide ${idx + 1}`}
+                          style={{ maxHeight: '400px', objectFit: 'cover' }}
+                        />
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
                 </Card>
               )}
               <p><strong>Description:</strong> {listing.description}</p>
               <p><strong>Address:</strong> {listing.address}</p>
 
               <Row className="mt-3">
-                <Col><Badge bg="secondary">{listing.bedrooms} Bedrooms</Badge></Col>
-                <Col><Badge bg="secondary">{listing.bathrooms} Bathrooms</Badge></Col>
-                <Col><Badge bg={listing.parking ? 'success' : 'danger'}>
-                  {listing.parking ? 'Parking Available' : 'No Parking'}
-                </Badge></Col>
-                <Col><Badge bg={listing.furnished ? 'success' : 'secondary'}>
-                  {listing.furnished ? 'Furnished' : 'Unfurnished'}
-                </Badge></Col>
+                <Col><Badge bg="secondary"><FaBed /> {listing.bedrooms} Bedrooms</Badge></Col>
+                <Col><Badge bg="secondary"><FaBath /> {listing.bathrooms} Bathrooms</Badge></Col>
+                <Col><Badge bg={listing.parking ? 'success' : 'danger'}><FaParking /> {listing.parking ? 'Parking Available' : 'No Parking'}</Badge></Col>
+                <Col><Badge bg={listing.furnished ? 'success' : 'secondary'}><FaCouch /> {listing.furnished ? 'Furnished' : 'Unfurnished'}</Badge></Col>
               </Row>
             </Col>
 
             <Col md={4}>
               <Card className="p-3 shadow-sm">
                 <h4>
-                  Price:{" "}
+                  <FaTag /> Price:{" "}
                   <span className="text-success">
                     ${listing.offer ? listing.discountPrice : listing.regularPrice}
                   </span>
@@ -92,6 +95,11 @@ const Listing = () => {
                 </Badge>
               </Card>
             </Col>
+          </Row>
+
+          <Row className="mt-3">
+            <Col><FaMapMarkerAlt /> <strong>Location:</strong> {listing.address}</Col>
+            <Col><FaRegMoneyBillAlt /> <strong>Discounted Price:</strong> ${listing.discountPrice}</Col>
           </Row>
         </>
       )}
