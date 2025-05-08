@@ -1,10 +1,9 @@
 const express = require("express");
-const { test } = require("../controllers/user");
 const router = express.Router();
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
 const { verifyToken } = require("../utils/verifyUser");
-const { updateUser, deleteUser, getUserListings } = require('../controllers/user.js')
+const { updateUser, deleteUser, getUserListings, getUser } = require('../controllers/user.js')
 const path = require("path");
 
 
@@ -33,9 +32,9 @@ const fileFilter = (req, file, cb) => {
 };
 let upload = multer({ storage, fileFilter });
 
-router.get('/test', test);
 router.post('/update/:id', verifyToken, upload.single("avatar"), updateUser);
 router.delete('/delete/:id', verifyToken, deleteUser);
 router.get('/listings/:id', verifyToken, getUserListings)
+router.get('/:id', verifyToken, getUser);
 
 module.exports = router

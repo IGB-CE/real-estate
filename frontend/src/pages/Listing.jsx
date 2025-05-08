@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Spinner, Alert, Badge, Carousel } from 'react-bootstrap';
+import { Container, Row, Col, Card, Spinner, Alert, Badge, Carousel, Button } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { FaBed, FaBath, FaParking, FaCouch, FaTag, FaMapMarkerAlt, FaRegMoneyBillAlt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import ContactLandlord from '../components/ContactLandlord';
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [contact, setContact] = useState(false)
   const params = useParams();
+  const {currentUser} = useSelector((state) => state.user)
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -94,6 +98,12 @@ const Listing = () => {
                   {listing.type === "sell" ? "For Sale" : "For Rent"}
                 </Badge>
               </Card>
+                {
+                  currentUser && listing.userRef !== currentUser._id && !contact && (
+                    <Button onClick={()=>setContact(true)} className='w-100 my-4' variant='primary'>Contact landlord</Button>
+                  )
+                }
+                {contact && <ContactLandlord listing={listing}/>}
             </Col>
           </Row>
 
