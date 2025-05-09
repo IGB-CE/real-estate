@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 
 const Search = () => {
     const defaultFilters = {
-        searchTerm: '',
         type: '',
         furnished: false,
         parking: false,
@@ -16,12 +15,14 @@ const Search = () => {
 
     const [filters, setFilters] = useState(defaultFilters);
     const [appliedFilters, setAppliedFilters] = useState(defaultFilters);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [appliedSearchTerm, setAppliedSearchTerm] = useState('');
     const [listings, setListings] = useState([]);
 
     const fetchListings = async () => {
         try {
             const params = {};
-            if (appliedFilters.searchTerm) params.searchTerm = appliedFilters.searchTerm;
+            if (appliedSearchTerm) params.searchTerm = appliedSearchTerm;
             if (appliedFilters.type === 'sell') params.sell = true;
             if (appliedFilters.type === 'rent') params.rent = true;
             if (appliedFilters.furnished) params.furnished = true;
@@ -40,9 +41,10 @@ const Search = () => {
         }
     };
 
+    // Fetch on search term or filters change
     useEffect(() => {
         fetchListings();
-    }, [appliedFilters]);
+    }, [appliedFilters, appliedSearchTerm]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -52,8 +54,7 @@ const Search = () => {
         }));
     };
 
-    const handleSearch = (e) => {
-        e.preventDefault();
+    const applyFilters = () => {
         setAppliedFilters(filters);
     };
 
@@ -62,19 +63,24 @@ const Search = () => {
         setAppliedFilters(defaultFilters);
     };
 
+    const handleSearchChange = (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        setSearchTerm(value);
+        setAppliedSearchTerm(value); // Apply instantly
+    };
+
     return (
         <Container fluid className="py-4">
             <Row>
+                {/* Filters Section */}
                 <Col
                     md={3}
-                    style={{
-                        borderRight: '2px solid #ddd',
-                        paddingTop: '20px',
-                    }}
+                    style={{ borderRight: '2px solid #ddd', paddingTop: '20px' }}
                     className="mb-4 mb-md-0"
                 >
-                    <h5>Filters</h5>
-                    <Form onSubmit={handleSearch}>
+                    <h5 className='text-center'>Filters</h5>
+                    <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>Purpose</Form.Label>
                             <Form.Select name="type" value={filters.type} onChange={handleInputChange}>
@@ -124,14 +130,15 @@ const Search = () => {
                                 <option value="asc">Ascending</option>
                             </Form.Select>
                         </Form.Group>
+
                         <Row>
                             <Col md={6}>
                                 <Button variant="secondary" type="button" className="w-100" onClick={resetFilters}>
-                                    Reset All Filters
+                                    Reset Filters
                                 </Button>
                             </Col>
                             <Col md={6}>
-                                <Button variant="primary" type="submit" className="w-100 mb-2">
+                                <Button variant="primary" type="button" className="w-100 mb-2" onClick={applyFilters}>
                                     Apply Filters
                                 </Button>
                             </Col>
@@ -139,20 +146,22 @@ const Search = () => {
                     </Form>
                 </Col>
 
+                {/* Listings Section */}
                 <Col md={9}>
+                    {/* Search Bar */}
                     <div className="d-flex justify-content-center mb-4">
                         <Form className="w-75">
                             <Form.Control
                                 type="text"
                                 placeholder="Search listings..."
-                                name="searchTerm"
-                                value={filters.searchTerm}
-                                onChange={handleInputChange}
+                                value={searchTerm}
+                                onChange={handleSearchChange}
                                 className="rounded-4 px-4 py-2 border-dark shadow text-center fs-5"
                             />
                         </Form>
                     </div>
 
+                    {/* Listings Display */}
                     <Row>
                         {listings.length > 0 ? (
                             listings.map((listing) => (
