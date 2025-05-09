@@ -94,11 +94,11 @@ const updateListing = async (req, res, next) => {
     }
 };
 
-const getListing = async (req,res,next) => {
+const getListing = async (req, res, next) => {
     try {
         const listing = await Listing.findById(req.params.id)
         if (!listing) {
-            return next(errorHandler(404,'Listing not found!'))
+            return next(errorHandler(404, 'Listing not found!'))
         }
         res.status(200).json(listing)
     } catch (error) {
@@ -106,4 +106,57 @@ const getListing = async (req,res,next) => {
     }
 }
 
-module.exports = { createListing, deleteListing, updateListing, getListing };
+const getListings = async (req, res, next) => {
+    try {
+        const limit = parseInt(req.query.limit) || 6;
+        const startIndex = parseInt(req.query.startIndex) || 0;
+
+        const offer = req.query.offer === 'true' ? true
+            : req.query.offer === 'false' ? false
+                : { $in: [true, false] };
+
+        const furnished = req.query.furnished === 'true' ? true
+            : req.query.furnished === 'false' ? false
+                : { $in: [true, false] };
+
+        const parking = req.query.parking === 'true' ? true
+            : req.query.parking === 'false' ? false
+                : { $in: [true, false] };
+
+        const type = req.query.type && req.query.type !== 'all'
+            ? req.query.type
+            : { $in: ['sell', 'rent'] };
+
+        const searchTerm = req.query.searchTerm || '';
+        const sort = req.query.sort || 'createdAt';
+        const order = req.query.order === 'asc' ? 1 : -1;
+
+        console.log({
+            name: { $regex: searchTerm, $options: 'i' },
+            offer,
+            furnished,
+            parking,
+            type
+        });
+
+
+        const listings = await Listing.find({
+            name: { $regex: searchTerm, $options: 'i' },
+            offer,
+            furnished,
+            parking,
+
+        })
+            .sort({ [sort]: order })
+            .limit(limit)
+            .skip(startIndex);
+
+        return res.status(200).json(listings);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+module.exports = { createListing, deleteListing, updateListing, getListing, getListings };

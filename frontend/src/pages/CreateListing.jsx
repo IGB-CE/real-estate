@@ -5,8 +5,6 @@ import axios from 'axios';
 import { useSelector } from 'react-redux'
 
 const checkboxOptions = [
-    { label: 'Sell', name: 'sell' },
-    { label: 'Rent', name: 'rent' },
     { label: 'Parking spot', name: 'parking' },
     { label: 'Furnished', name: 'furnished' },
     { label: 'Offer', name: 'offer' },
@@ -125,9 +123,8 @@ const CreateListing = () => {
                             <Form.Label>Listing Type</Form.Label>
                             <Form.Select name="type" onChange={handleChange} value={product.type}>
                                 <option value="">Select Type</option>
-                                <option value="apartment">Apartment</option>
-                                <option value="house">House</option>
-                                <option value="studio">Studio</option>
+                                <option value="sell">Sell</option>
+                                <option value="rent">Rent</option>
                             </Form.Select>
                         </Form.Group>
 

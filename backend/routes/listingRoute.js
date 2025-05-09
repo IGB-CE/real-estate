@@ -1,5 +1,5 @@
 const express = require("express");
-const { createListing, deleteListing, updateListing, getListing } = require('../controllers/listing.js');
+const { createListing, deleteListing, updateListing, getListing, getListings } = require('../controllers/listing.js');
 const { verifyToken } = require("../utils/verifyUser.js");
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
@@ -66,5 +66,6 @@ router.post('/update/:id', verifyToken, upload.array('images', 10), async (req, 
 });
 
 router.get('/get/:id', getListing)
+router.get('/get', getListings)
 
 module.exports = router;

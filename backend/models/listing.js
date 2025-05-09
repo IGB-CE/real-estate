@@ -21,7 +21,7 @@ const listingSchema = new mongoose.Schema({
         type: Number,
         required: true,
         validate: {
-            validator: function(value) {
+            validator: function (value) {
                 return value <= this.regularPrice;
             },
             message: 'Discount price cannot be higher than regular price.',
