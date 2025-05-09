@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Container, FloatingLabel, Form, InputGroup, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
 const checkboxOptions = [
     { label: 'Parking spot', name: 'parking' },
@@ -12,27 +12,26 @@ const checkboxOptions = [
 
 const CreateListing = () => {
     const nav = useNavigate();
-    const { currentUser } = useSelector(state => state.user)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const { currentUser } = useSelector(state => state.user);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
     const [product, setProduct] = useState({
-        name: "",
-        description: "",
-        address: "",
-        type: "", // add this
+        name: '',
+        description: '',
+        address: '',
+        type: '',
         sell: false,
         rent: false,
         parking: false,
         furnished: false,
         offer: false,
-        bedrooms: 1, // was beds
-        bathrooms: 1, // was baths
+        bedrooms: 1,
+        bathrooms: 1,
         regularPrice: 0,
-        discountPrice: 0, // was discountedPrice
+        discountPrice: 0,
         images: [],
     });
-
 
     const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -63,36 +62,31 @@ const CreateListing = () => {
 
         // Append images
         product.images.forEach((image) => {
-            formData.append("images", image);
+            formData.append('images', image);
         });
 
         // Append fields
         Object.entries(product).forEach(([key, value]) => {
-            if (key !== "images") {
+            if (key !== 'images') {
                 formData.append(key, value);
             }
         });
 
         // Add user reference
-        formData.append("userRef", currentUser._id);
-        console.log(formData['userRef']);
+        formData.append('userRef', currentUser._id);
 
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}:`, value);
-        }
         try {
-            const res = await axios.post("http://localhost:5000/api/listing/create", formData, {
+            const res = await axios.post('http://localhost:5000/api/listing/create', formData, {
                 withCredentials: true, // ✅ Axios equivalent of credentials: 'include'
             });
             if (res.data.success === false) {
-                setError(res.data.message || "Something went wrong");
+                setError(res.data.message || 'Something went wrong');
             } else {
-                nav("/");
+                nav('/');
             }
         } catch (err) {
-            setError(err.response?.data?.message || "Submission failed");
-        }
-        finally {
+            setError(err.response?.data?.message || 'Submission failed');
+        } finally {
             setLoading(false);
         }
     };
@@ -107,21 +101,42 @@ const CreateListing = () => {
                     <Col md={6}>
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" name="name" onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                name="name"
+                                onChange={handleChange}
+                                required
+                            />
                         </Form.Group>
 
                         <FloatingLabel controlId="description" label="Add a description" className="mb-3">
-                            <Form.Control as="textarea" name="description" style={{ height: '200px' }} onChange={handleChange} />
+                            <Form.Control
+                                as="textarea"
+                                name="description"
+                                style={{ height: '200px' }}
+                                onChange={handleChange}
+                                required
+                            />
                         </FloatingLabel>
 
                         <Form.Group className="mb-3" controlId="address">
                             <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" name="address" onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                name="address"
+                                onChange={handleChange}
+                                required
+                            />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Listing Type</Form.Label>
-                            <Form.Select name="type" onChange={handleChange} value={product.type}>
+                            <Form.Select
+                                name="type"
+                                onChange={handleChange}
+                                value={product.type}
+                                required
+                            >
                                 <option value="">Select Type</option>
                                 <option value="sell">Sell</option>
                                 <option value="rent">Rent</option>
@@ -147,13 +162,27 @@ const CreateListing = () => {
                             <Col md={6}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Beds</InputGroup.Text>
-                                    <Form.Control type="number" name="bedrooms" min={0} max={10} onChange={handleChange} />
+                                    <Form.Control
+                                        type="number"
+                                        name="bedrooms"
+                                        min={0}
+                                        max={10}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                 </InputGroup>
                             </Col>
                             <Col md={6}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Baths</InputGroup.Text>
-                                    <Form.Control type="number" name="bathrooms" min={0} max={10} onChange={handleChange} />
+                                    <Form.Control
+                                        type="number"
+                                        name="bathrooms"
+                                        min={0}
+                                        max={10}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                 </InputGroup>
                             </Col>
                         </Row>
@@ -161,13 +190,27 @@ const CreateListing = () => {
                         <Row>
                             <Col md={6}>
                                 <InputGroup className="mb-3">
-                                    <Form.Control type="number" name="regularPrice" placeholder="Regular price" min={0} onChange={handleChange} />
+                                    <Form.Control
+                                        type="number"
+                                        name="regularPrice"
+                                        placeholder="Regular price"
+                                        min={0}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                     <InputGroup.Text>(L / month)</InputGroup.Text>
                                 </InputGroup>
                             </Col>
                             <Col md={6}>
                                 <InputGroup className="mb-3">
-                                    <Form.Control type="number" name="discountPrice" placeholder="Discounted price" min={0} onChange={handleChange} />
+                                    <Form.Control
+                                        type="number"
+                                        name="discountPrice"
+                                        placeholder="Discounted price"
+                                        min={0}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                     <InputGroup.Text>(L / month)</InputGroup.Text>
                                 </InputGroup>
                             </Col>
@@ -177,7 +220,14 @@ const CreateListing = () => {
                     <Col md={6}>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>The first image will be the cover:</Form.Label>
-                            <Form.Control type="file" name="images" accept="image/*" multiple onChange={handleImages} />
+                            <Form.Control
+                                type="file"
+                                name="images"
+                                accept="image/*"
+                                multiple
+                                onChange={handleImages}
+                                required
+                            />
                         </Form.Group>
 
                         {imagePreviews.length > 0 && (
@@ -200,7 +250,6 @@ const CreateListing = () => {
                         {error && <p>{error}</p>}
                     </Col>
                 </Row>
-
             </Form>
         </Container>
     );

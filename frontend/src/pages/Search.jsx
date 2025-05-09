@@ -14,14 +14,13 @@ const Search = () => {
         order: ''
     };
 
-    const [filters, setFilters] = useState(defaultFilters); // Current filter values
-    const [appliedFilters, setAppliedFilters] = useState(defaultFilters); // Applied filters state
+    const [filters, setFilters] = useState(defaultFilters);
+    const [appliedFilters, setAppliedFilters] = useState(defaultFilters);
     const [listings, setListings] = useState([]);
 
     const fetchListings = async () => {
         try {
             const params = {};
-
             if (appliedFilters.searchTerm) params.searchTerm = appliedFilters.searchTerm;
             if (appliedFilters.type === 'sell') params.sell = true;
             if (appliedFilters.type === 'rent') params.rent = true;
@@ -42,8 +41,8 @@ const Search = () => {
     };
 
     useEffect(() => {
-        fetchListings(); // Fetch listings on initial render
-    }, [appliedFilters]); // Fetch when applied filters change
+        fetchListings();
+    }, [appliedFilters]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -55,23 +54,22 @@ const Search = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        setAppliedFilters(filters); // Apply filters only when the button is clicked
+        setAppliedFilters(filters);
     };
 
     const resetFilters = () => {
-        setFilters(defaultFilters); // Reset to default filter values
-        setAppliedFilters(defaultFilters); // Reset applied filters as well
+        setFilters(defaultFilters);
+        setAppliedFilters(defaultFilters);
     };
 
     return (
         <Container fluid className="py-4">
             <Row>
-                {/* Filters - Left Side with Vertical Gray Line */}
                 <Col
                     md={3}
                     style={{
-                        borderRight: '2px solid #ddd', // Add border for larger screens
-                        paddingTop: '20px', // Make sure it's aligned at the top
+                        borderRight: '2px solid #ddd',
+                        paddingTop: '20px',
                     }}
                     className="mb-4 mb-md-0"
                 >
@@ -128,12 +126,12 @@ const Search = () => {
                         </Form.Group>
                         <Row>
                             <Col md={6}>
-                            <Button variant="secondary" type="button" className="w-100" onClick={resetFilters}>
+                                <Button variant="secondary" type="button" className="w-100" onClick={resetFilters}>
                                     Reset All Filters
                                 </Button>
                             </Col>
                             <Col md={6}>
-                                 <Button variant="primary" type="submit" className="w-100 mb-2">
+                                <Button variant="primary" type="submit" className="w-100 mb-2">
                                     Apply Filters
                                 </Button>
                             </Col>
@@ -141,9 +139,7 @@ const Search = () => {
                     </Form>
                 </Col>
 
-                {/* Main Content - Search + Listings */}
                 <Col md={9}>
-                    {/* Search Bar - Top Middle */}
                     <div className="d-flex justify-content-center mb-4">
                         <Form className="w-75">
                             <Form.Control
@@ -157,14 +153,16 @@ const Search = () => {
                         </Form>
                     </div>
 
-                    {/* Listings */}
                     <Row>
                         {listings.length > 0 ? (
                             listings.map((listing) => (
                                 <Col key={listing._id} md={6} lg={4} className="mb-4">
                                     <Link to={`/listing/${listing._id}`}>
-                                        <Card>
-                                            <Card.Img variant="top" src={`http://localhost:5000/${listing.images?.[0]}`} style={{ height: '200px', objectFit: 'cover' }} />
+                                        <Card className='project-card me-3 mb-4 flex-shrink-0'>
+                                            <Card.Img
+                                                variant="top"
+                                                src={`http://localhost:5000/${listing.images?.[0]}`}
+                                            />
                                             <Card.Body>
                                                 <Card.Title>{listing.name}</Card.Title>
                                                 <Card.Text>{listing.address}</Card.Text>

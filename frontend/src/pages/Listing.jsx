@@ -82,7 +82,7 @@ const Listing = () => {
             </Col>
 
             <Col md={4}>
-              <Card className="p-3 shadow-sm">
+              <Card className="p-3 shadow-sm w-75">
                 <h4>
                   <FaTag /> Price:{" "}
                   <span className="text-success">

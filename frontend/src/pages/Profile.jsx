@@ -236,10 +236,10 @@ const Profile = () => {
                   </Link>
                 </Col>
                 <Col md={4} className="d-flex flex-column align-items-end">
-                  <Link className='mb-2 w-75' to={`/update-listing/${listing._id}`}>
-                    <Button variant='success' >Edit</Button>
+                  <Link className='mb-2 w-100' to={`/update-listing/${listing._id}`}>
+                    <Button variant='success' className="w-100">Edit</Button>
                   </Link>
-                  <Button onClick={() => handleListingDelete(listing._id)} variant='danger' className='w-75'>Delete</Button>
+                  <Button onClick={() => handleListingDelete(listing._id)} variant='danger' className='w-100'>Delete</Button>
                 </Col>
               </Row>
             ))
