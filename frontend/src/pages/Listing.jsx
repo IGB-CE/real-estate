@@ -100,7 +100,7 @@ const Listing = () => {
               </Card>
                 {
                   currentUser && listing.userRef !== currentUser._id && !contact && (
-                    <Button onClick={()=>setContact(true)} className='w-100 my-4' variant='primary'>Contact landlord</Button>
+                    <Button onClick={()=>setContact(true)} className='w-75 my-4' variant='primary'>Contact landlord</Button>
                   )
                 }
                 {contact && <ContactLandlord listing={listing}/>}
