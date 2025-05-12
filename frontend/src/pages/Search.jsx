@@ -165,7 +165,7 @@ const Search = () => {
                     <Row>
                         {listings.length > 0 ? (
                             listings.map((listing) => (
-                                <Col key={listing._id} md={6} lg={4} className="mb-4">
+                                <Col key={listing._id} md={12} lg={6} xl={4} className="mb-4">
                                     <Link to={`/listing/${listing._id}`}>
                                         <Card className='project-card me-3 mb-4 flex-shrink-0'>
                                             <Card.Img
