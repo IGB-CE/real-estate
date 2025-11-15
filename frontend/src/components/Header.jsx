@@ -8,21 +8,21 @@ const Header = () => {
     return (
         <Carousel>
         <Carousel.Item>
-            <Image src={assets.hero} fluid />
+            <Image src={assets.hero} fluid style={{ maxHeight: '80vh', width: '100%', objectFit: 'cover' }}/>
           <Carousel.Caption>
             <h1>Not just a home</h1>
             <h2>"- a brand new life"</h2>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-        <Image src={assets.hero2} fluid />
+        <Image src={assets.hero2} fluid style={{ maxHeight: '80vh', width: '100%', objectFit: 'cover' }}/>
           <Carousel.Caption>
             <h1>Building bridges of trust</h1>
             <h2>"With professionalism, transparence and passion"</h2>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-        <Image src={assets.hero3} fluid />
+        <Image src={assets.hero3} fluid style={{ maxHeight: '80vh', width: '100%', objectFit: 'cover' }}/>
           <Carousel.Caption>
             <h1>We don't offer just buildings</h1>
             <h2>"We offer life"</h2>
