@@ -2,9 +2,8 @@ import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { Image } from 'react-bootstrap';
 import { assets } from '../assets/assets';
-import { motion } from "motion/react"
 
-const Header = () => {
+const Hero = () => {
     return (
         <Carousel>
         <Carousel.Item>
@@ -32,4 +31,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default Hero;
